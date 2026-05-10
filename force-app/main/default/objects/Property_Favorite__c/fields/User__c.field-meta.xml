@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>User__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the User who favorited this property.</description>
+    <inlineHelpText>The Salesforce user who marked this property as a favorite.</inlineHelpText>
+    <label>User</label>
+    <referenceTo>User</referenceTo>
+    <relationshipLabel>Property Favorites</relationshipLabel>
+    <relationshipName>User_Favorites</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="Favorites" icon-name="utility:heart">
+        <div class="slds-var-m-around_medium">
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+            <template lwc:else>
+                <lightning-button
+                    label={favoriteButtonLabel}
+                    icon-name="utility:heart"
+                    onclick={handleToggleFavorite}
+                    variant={favoriteButtonVariant}>
+                </lightning-button>
+            </template>
+        </div>
+    </lightning-card>
+</template>

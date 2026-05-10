@@ -1,6 +1,9 @@
 <template>
     <a onclick={handlePropertySelected} title={property.Name}>
         <div class="tile" style={backgroundImageStyle}>
+            <button class={favoriteIconClass} onclick={handleFavoriteToggle} title="Toggle Favorite" aria-label="Toggle Favorite">
+                <lightning-icon icon-name="utility:heart" size="x-small"></lightning-icon>
+            </button>
             <div
                 class="lower-third slds-var-p-horizontal_x-small slds-var-p-vertical_xx-small slds-text-color_inverse"
             >

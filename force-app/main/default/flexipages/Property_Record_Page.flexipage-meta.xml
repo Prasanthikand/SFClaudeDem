@@ -496,6 +496,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>propertyFavoriteButton</componentName>
+                <identifier>c_propertyFavoriteButton</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentName>brokerCard</componentName>
                 <identifier>c_brokerCard2</identifier>
             </componentInstance>

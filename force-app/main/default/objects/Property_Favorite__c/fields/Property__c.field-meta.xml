@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Property__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Lookup to the Property__c record that the user has favorited.</description>
+    <inlineHelpText>Select the property that this favorite record is associated with.</inlineHelpText>
+    <label>Property</label>
+    <referenceTo>Property__c</referenceTo>
+    <relationshipLabel>Property Favorites</relationshipLabel>
+    <relationshipName>Property_Favorites</relationshipName>
+    <required>false</required>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,43 @@
+.property-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+}
+
+.property-row:hover {
+    background-color: #f4f6f9;
+}
+
+.property-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 12px;
+}
+
+.property-info {
+    flex: 1;
+}
+
+.property-name {
+    font-weight: bold;
+    margin: 0 0 2px 0;
+}
+
+.property-location,
+.property-details {
+    margin: 0;
+    font-size: 12px;
+    color: #6b6b6b;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #e52207;
+    padding: 4px;
+}

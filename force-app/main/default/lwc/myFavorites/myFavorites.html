@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="My Favorites" icon-name="utility:favorite">
+        <div class="slds-var-m-around_medium">
+            <template lwc:if={favoriteProperties.data}>
+                <template lwc:if={hasNoFavorites}>
+                    <c-error-panel friendly-message="You have no saved favorites yet."></c-error-panel>
+                </template>
+                <template lwc:else>
+                    <template for:each={favoriteProperties.data} for:item="prop">
+                        <div key={prop.Id} class="property-row" data-property-id={prop.Id} onclick={handleNavigateToProperty}>
+                            <img src={prop.Thumbnail__c} alt={prop.Name} class="property-thumbnail" />
+                            <div class="property-info">
+                                <p class="property-name">{prop.Name}</p>
+                                <p class="property-location">{prop.City__c}, {prop.State__c}</p>
+                                <p class="property-details">{prop.Beds__c} beds · {prop.Baths__c} baths</p>
+                                <lightning-formatted-number value={prop.Price__c} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                            </div>
+                            <button class="remove-btn" data-property-id={prop.Id} onclick={handleRemoveFavorite} title="Remove from Favorites" aria-label="Remove from Favorites">
+                                <lightning-icon icon-name="utility:heart" size="x-small" class="remove-icon"></lightning-icon>
+                            </button>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <template lwc:elseif={favoriteProperties.error}>
+                <c-error-panel friendly-message="Error loading favorites."></c-error-panel>
+            </template>
+        </div>
+    </lightning-card>
+</template>

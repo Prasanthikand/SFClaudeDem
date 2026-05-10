@@ -1,9 +1,10 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import FORM_FACTOR from '@salesforce/client/formFactor';
 import { NavigationMixin } from 'lightning/navigation';
 
 export default class PropertyTile extends NavigationMixin(LightningElement) {
     @api property;
+    @api isFavorited = false;
     formFactor = FORM_FACTOR;
 
     handlePropertySelected() {
@@ -24,6 +25,18 @@ export default class PropertyTile extends NavigationMixin(LightningElement) {
             });
             this.dispatchEvent(selectedEvent);
         }
+    }
+
+    handleFavoriteToggle(event) {
+        event.stopPropagation();
+        this.dispatchEvent(new CustomEvent('favoritetoggle', {
+            detail: { propertyId: this.property.Id, isFavorited: this.isFavorited },
+            bubbles: true
+        }));
+    }
+
+    get favoriteIconClass() {
+        return this.isFavorited ? 'favorite-icon favorite-active' : 'favorite-icon';
     }
 
     get backgroundImageStyle() {

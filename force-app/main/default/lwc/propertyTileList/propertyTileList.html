@@ -3,13 +3,15 @@
         <template lwc:if={properties.data}>
             <div class="slds-grid slds-wrap">
                 <template
-                    for:each={properties.data.records}
-                    for:item="property"
+                    for:each={propertiesWithFavoriteFlag}
+                    for:item="prop"
                 >
                     <c-property-tile
-                        property={property}
-                        key={property.Id}
+                        property={prop}
+                        key={prop.Id}
+                        is-favorited={prop.isFavorited}
                         onselected={handlePropertySelected}
+                        onfavoritetoggle={handleFavoriteToggle}
                         class="slds-col slds-var-m-around_xx-small"
                     ></c-property-tile>
                 </template>
