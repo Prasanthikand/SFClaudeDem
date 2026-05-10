@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem *)",
+      "Bash(gh pr create --title 'feat: Add force-app Salesforce DX project structure' --base main --head feature/force-app-initial-setup --body ' *)",
+      "Bash(gh pr *)"
+    ]
+  }
+}
