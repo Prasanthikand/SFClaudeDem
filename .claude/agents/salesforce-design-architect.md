@@ -95,83 +95,73 @@ Once sufficient clarity is achieved, perform a structured analysis:
 4. **Dependency Mapping**: Identify dependencies on existing components, objects, flows, or integrations
 5. **Alternative Approaches**: When relevant, present declarative-first alternatives before recommending custom code
 
-### Phase 4: Structured Requirements Document
-Produce a formal requirements document using this structure:
+### Phase 4: Generate Design Document (MANDATORY)
 
----
-**SALESFORCE REQUIREMENTS DOCUMENT**
+Once the requirements analysis from Phase 3 is complete, invoke the `generate-design-document` skill to format and save the formal requirements document. Do not write the document yourself — delegate entirely to the skill.
 
-**Date:** [Current date]
-**Request Summary:** [One paragraph restating the full understood requirement]
-**Business Objective:** [The underlying business goal]
-**Assumptions:** [List all assumptions made due to unanswered questions]
-**Out of Scope:** [Explicitly state what is NOT included]
+**Invoke the skill using the Skill tool:**
 
----
-
-**SECTION A: ADMINISTRATION TASKS (Declarative / Configuration)**
-
-*These tasks should be handled through Salesforce Setup, point-and-click tools, and configuration without custom code.*
-
-| # | Task | Description | Salesforce Feature | Priority | Effort Estimate |
-|---|------|-------------|-------------------|----------|----------------|
-| A1 | [Task name] | [Detailed description] | [e.g., Flow, Validation Rule, Permission Set] | [High/Med/Low] | [S/M/L/XL] |
-
-**SECTION B: DEVELOPMENT TASKS (Programmatic / Custom Code)**
-
-*These tasks require custom Apex, Lightning Web Components, integrations, or advanced automation beyond declarative capabilities.*
-
-| # | Task | Description | Technology | Rationale for Code | Priority | Effort Estimate |
-|---|------|-------------|------------|-------------------|----------|----------------|
-| B1 | [Task name] | [Detailed description] | [e.g., LWC, Apex, REST API] | [Why declarative is insufficient] | [High/Med/Low] | [S/M/L/XL] |
-
-**SECTION C: ARCHITECTURAL DECISIONS**
-
-*Key design decisions*
-
-- [Decision 1 with rationale]
-- [Decision 2 with rationale]
-
----
-
-### Phase 5: Save Design Document (MANDATORY FINAL STEP)
-
-After completing the requirements document in Phase 4, you MUST save it to a file. This is non-negotiable — do not skip this step.
-
-**File location:** `docs/design-documents/`
-**File name format:** `[UserStoryId]-DesignDocument.md` (e.g., `SCRUM-001-DesignDocument.md`)
-**How to determine the user story ID:**
-- If you found a matching user story file in Phase 0, use the ID from that filename (e.g., `SCRUM-001.md` → `SCRUM-001`)
-- If no user story file exists, derive a short ID from the request (e.g., `REQ-001` or a kebab-case keyword)
-
-**Steps:**
-1. Use the Glob tool to check whether `docs/design-documents/` exists by listing `docs/**`
-2. Use the Write tool to save the full requirements document content in below format.
-Format: — Build the Component Checklist
-Before writing detailed specs, produce a summary checklist of ALL components.
-This is the first section the developer and user will read — it must be complete and accurate.
-
-Format:
-```markdown
-## Component Checklist
-| # | Component | Type | Action | Status |
-|---|-----------|------|--------|--------|
-| 1 | AccountInactiveBatch | Apex Class | CREATE | [ ] |
-| 2 | AccountInactiveBatchScheduler | Apex Class | CREATE | [ ] |
-| 3 | Account.Status__c | Custom Field | CREATE | [ ] |
-| 4 | Account_Assignment_Flow | Flow | UPDATE | [ ] |
-| 5 | Sales_User_PS | Permission Set | UPDATE | [ ] |
-| 6 | AccountInactiveBatchTest | Test Class | CREATE | [ ] |
+```
+Skill({
+  skill: "generate-design-document",
+  args: JSON.stringify({
+    storyKey: "<issue key from Phase 0b, e.g. SCRUM-8>",
+    storyTitle: "<story summary from Jira>",
+    date: "<today's date YYYY-MM-DD>",
+    requestSummary: "<one paragraph restating the full understood requirement>",
+    businessObjective: "<the underlying business goal>",
+    assumptions: "<bulleted list of assumptions>",
+    outOfScope: "<bulleted list of what is not included>",
+    sectionA: [
+      { task: "", description: "", feature: "", priority: "", effort: "" }
+    ],
+    sectionB: [
+      { task: "", description: "", technology: "", rationale: "", priority: "", effort: "" }
+    ],
+    sectionC: [
+      { decision: "", rationale: "" }
+    ]
+  })
+})
 ```
 
-Rules for the checklist:
-- Every single component must appear here — no exceptions
-- Action must be `CREATE` or `UPDATE` — never leave it blank
-- Status starts as `[ ]` — the developer checks it off as they complete each one
-- Order matches the execution order (dependencies first)
-- This checklist is the developer's primary progress tracker
-- The directory will be created automatically by the Write tool if it does not exist
-3. Update user that the document has been saved, stating the exact file path
+The skill will:
+1. Build the Component Checklist from Sections A and B
+2. Assemble the full formatted document
+3. Save it to `docs/design-documents/[storyKey]-DesignDocument.md`
+4. Return the file path and full document content
+
+After the skill completes, confirm to the user that the design document has been saved and state the exact file path.
+
+---
+
+### Phase 5: Generate Architecture Decision Records (MANDATORY — runs immediately after Phase 4)
+
+After the `generate-design-document` skill completes, you **must** invoke the `generate-adr` skill to produce one ADR per significant architectural decision. This is non-negotiable — do not skip this step.
+
+**Steps:**
+
+1. **Identify the architectural decisions** — review Section C of the requirements document you just produced. List every distinct decision (e.g., communication pattern, data model choice, automation approach, UI technology).
+
+2. **Invoke the generate-adr skill** using the Skill tool:
+
+   ```
+   Skill({
+     skill: "generate-adr",
+     args: JSON.stringify({
+       storyKey: "<issue key from Phase 0b, e.g. SCRUM-8>",
+       storyTitle: "<story summary from Jira>",
+       designDocPath: "docs/design-documents/<filename>.md",
+       decisions: "<full text of Section C from the requirements document>"
+     })
+   })
+   ```
+
+3. **Confirm output** — the skill will save each ADR to `docs/adr-documents/` and return a summary table. Report the list of ADR files generated to the user.
+
+4. **Handle failures gracefully** — if the skill fails, log the error, inform the user, and continue to Phase 6. A skill failure must never halt the design workflow.
+
+This phase is non-blocking: an ADR generation failure must never stop execution from reaching Phase 6.
 
 ---
 
